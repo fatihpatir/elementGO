@@ -621,3 +621,30 @@ input[type=range] {
     margin-top: 10px;
     accent-color: var(--accent-color);
 }
+
+/* Feedback Styles */
+.feedback-box {
+    border: 2px solid var(--danger-color) !important;
+    background: rgba(255, 71, 87, 0.15) !important;
+    backdrop-filter: blur(25px);
+}
+
+.feedback-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.correct-info {
+    margin-top: 20px;
+}
+
+.correct-info h2 {
+    font-size: 2.2rem;
+    color: var(--danger-color);
+    margin: 5px 0;
+}
+
+.correct-info p {
+    color: var(--text-color);
+    font-weight: 500;
+}

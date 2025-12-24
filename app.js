@@ -18,7 +18,16 @@ const app = {
         { no: 15, symbol: "P", name: "Fosfor" },
         { no: 16, symbol: "S", name: "Kükürt" },
         { no: 17, symbol: "Cl", name: "Klor" },
-        { no: 18, symbol: "Ar", name: "Argon" }
+        { no: 18, symbol: "Ar", name: "Argon" },
+        { no: 26, symbol: "Fe", name: "Demir" },
+        { no: 29, symbol: "Cu", name: "Bakır" },
+        { no: 30, symbol: "Zn", name: "Çinko" },
+        { no: 47, symbol: "Ag", name: "Gümüş" },
+        { no: 79, symbol: "Au", name: "Altın" },
+        { no: 82, symbol: "Pb", name: "Kurşun" },
+        { no: 80, symbol: "Hg", name: "Cıva" },
+        { no: 78, symbol: "Pt", name: "Platin" },
+        { no: 53, symbol: "I", name: "İyot" }
     ],
 
     state: {
@@ -41,11 +50,21 @@ const app = {
     },
 
     init() {
-        console.log("Element İlk 18 GO Başlatıldı...");
+        console.log("Element GO Başlatıldı...");
         this.loadSettings();
         this.applyTheme();
         this.bindEvents();
-        this.navigateTo('menu');
+
+        // Use hash-based navigation for back button support
+        window.onhashchange = () => {
+            const hash = window.location.hash.replace('#', '') || 'menu';
+            if (hash !== this.state.view) {
+                this._navigateTo(hash, false);
+            }
+        };
+
+        const initialView = window.location.hash.replace('#', '') || 'menu';
+        this._navigateTo(initialView, false);
 
         // Prepare Learn Mode (Shuffle initially)
         this.shuffleLearn();
@@ -77,6 +96,13 @@ const app = {
     },
 
     navigateTo(viewId) {
+        if (window.location.hash !== '#' + viewId) {
+            window.location.hash = viewId;
+        }
+        this._navigateTo(viewId, true);
+    },
+
+    _navigateTo(viewId, isDirectCall) {
         // Stop quiz if leaving play view
         if (this.state.view === 'play' && viewId !== 'play') {
             this.endQuiz(false);
@@ -106,16 +132,16 @@ const app = {
         document.getElementById('card-atom-no').textContent = item.no;
         document.getElementById('card-symbol').textContent = item.symbol;
         document.getElementById('card-name').textContent = item.name;
-        document.getElementById('card-counter').textContent = `${this.state.learnIndex + 1} / 18`;
+        document.getElementById('card-counter').textContent = `${this.state.learnIndex + 1} / ${this.elements.length}`;
     },
 
     nextCard() {
-        this.state.learnIndex = (this.state.learnIndex + 1) % 18;
+        this.state.learnIndex = (this.state.learnIndex + 1) % this.elements.length;
         this.renderCard();
     },
 
     prevCard() {
-        this.state.learnIndex = (this.state.learnIndex - 1 + 18) % 18;
+        this.state.learnIndex = (this.state.learnIndex - 1 + this.elements.length) % this.elements.length;
         this.renderCard();
     },
 
@@ -163,7 +189,8 @@ const app = {
     nextQuestion() {
         const types = ['name_from_symbol', 'symbol_from_name', 'no_from_symbol'];
         const type = types[Math.floor(Math.random() * types.length)];
-        const correctItem = this.elements[Math.floor(Math.random() * 18)];
+        const correctItem = this.elements[Math.floor(Math.random() * this.elements.length)];
+        this.state.quiz.currentQuestion = correctItem;
 
         let questionText = "";
         let labelText = "";
@@ -189,7 +216,7 @@ const app = {
         // Generate Options
         const options = [correctAnswer];
         while (options.length < 4) {
-            const randomItem = this.elements[Math.floor(Math.random() * 18)];
+            const randomItem = this.elements[Math.floor(Math.random() * this.elements.length)];
             let val = "";
             if (type === 'name_from_symbol') val = randomItem.name;
             else if (type === 'symbol_from_name') val = randomItem.symbol;
@@ -223,9 +250,30 @@ const app = {
             this.playSound('dup');
             this.state.quiz.score = Math.max(0, this.state.quiz.score - 5);
             btn.classList.add('wrong');
-            // Shake effect could be here
+
+            // Educational Feedback
+            this.showEducationalFeedback();
         }
         document.getElementById('current-score').textContent = this.state.quiz.score;
+    },
+
+    showEducationalFeedback() {
+        const item = this.state.quiz.currentQuestion;
+        const overlay = document.getElementById('feedback-overlay');
+
+        document.getElementById('feedback-name').textContent = `${item.name} (${item.symbol})`;
+        document.getElementById('feedback-no').textContent = item.no;
+
+        overlay.classList.add('active');
+        this.state.quiz.isActive = false; // Pause actions
+
+        setTimeout(() => {
+            overlay.classList.remove('active');
+            if (this.state.view === 'play') {
+                this.state.quiz.isActive = true;
+                this.nextQuestion();
+            }
+        }, 2500);
     },
 
     endQuiz(showResult) {

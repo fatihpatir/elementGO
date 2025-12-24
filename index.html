@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Element İlk 18 GO</title>
+    <title>Element GO</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a1a2e">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,12 +32,12 @@
                         <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1.5"
                             stroke-dasharray="10 5" class="orbit reverse" />
                         <circle cx="50" cy="50" r="15" fill="var(--accent-color)" />
-                        <text x="50" y="55" text-anchor="middle" font-size="12" fill="white" font-weight="800">18</text>
+                        <text x="50" y="55" text-anchor="middle" font-size="12" fill="white" font-weight="800">GO</text>
                         <circle cx="50" cy="5" r="3" fill="var(--accent-color)" class="electron" />
                         <circle cx="50" cy="95" r="3" fill="var(--accent-color)" class="electron" />
                     </svg>
                 </div>
-                <h1>Element <span class="highlight">İlk 18</span> GO</h1>
+                <h1>Element <span class="highlight">GO</span></h1>
                 <p class="slogan">7. Sınıf Fen | Eğlenceli Öğren</p>
             </div>
 
@@ -88,7 +88,7 @@
 
             <div class="card-navigation">
                 <button class="nav-arrow" onclick="app.prevCard()">‹</button>
-                <div class="counter" id="card-counter">1 / 18</div>
+                <div class="counter" id="card-counter">1 / 27</div>
                 <button class="nav-arrow" onclick="app.nextCard()">›</button>
             </div>
         </section>
@@ -96,6 +96,7 @@
         <!-- Play Section (Quiz) -->
         <section id="play-view" class="view">
             <div class="quiz-header">
+                <button class="back-btn" onclick="app.navigateTo('menu')">←</button>
                 <div class="timer-ring">
                     <svg viewBox="0 0 36 36" class="circular-chart">
                         <path class="circle-bg"
@@ -128,6 +129,19 @@
                     <p class="motivation" id="motivation-msg">Harika bir denemeydi!</p>
                     <button class="btn-primary" onclick="app.startQuiz()">Tekrar Oyna</button>
                     <button class="btn-text" onclick="app.navigateTo('menu')">Ana Menü</button>
+                </div>
+            </div>
+
+            <!-- FEEDBACK OVERLAY (Educational) -->
+            <div id="feedback-overlay" class="overlay">
+                <div class="result-content feedback-box">
+                    <div class="feedback-icon">❌</div>
+                    <h3>Yanlış</h3>
+                    <div class="correct-info">
+                        <p>Bu element:</p>
+                        <h2 id="feedback-name">...</h2>
+                        <p>Atom Numarası: <strong id="feedback-no">...</strong></p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -186,7 +200,7 @@
             </header>
             <div class="info-container">
                 <div class="info-logo">⚛️</div>
-                <h3>Element İlk 18 GO</h3>
+                <h3>Element GO</h3>
                 <p>7. Sınıf Fen Bilimleri dersi için özel olarak hazırlanmıştır.</p>
 
                 <div class="dev-box" onclick="window.open('https://fatihpatir.github.io/web/index.html', '_blank')">
@@ -197,7 +211,8 @@
                 </div>
 
                 <div class="red-line">
-                    ⚠️ Bu uygulama sadece periyodik tablodaki ilk 18 elementi içerir.
+                    ✅ Bu uygulama periyodik tablodaki ilk 18 elemente ek olarak müfredattaki diğer yaygın elementleri
+                    (toplam 27) içerir.
                 </div>
 
                 <button class="btn-secondary" onclick="app.navigateTo('install')"

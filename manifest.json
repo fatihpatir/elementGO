@@ -1,7 +1,7 @@
 {
-  "name": "Element İlk 18 GO",
-  "short_name": "Element18",
-  "description": "7. Sınıf Fen Bilimleri İlk 18 Element Öğrenme Oyunu",
+  "name": "Element GO",
+  "short_name": "ElementGO",
+  "description": "7. Sınıf Fen Bilimleri Element Öğrenme Oyunu",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0c0c14",
