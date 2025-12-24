@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Element İlk 18 GO</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="dark-theme"> <!-- Varsayılan Koyu Tema -->
+
+    <!-- App Background -->
+    <div class="app-bg"></div>
+    <div class="glass-overlay"></div>
+
+    <div id="app">
+        <!-- Main Menu Section -->
+        <section id="menu-view" class="view active">
+            <div class="main-header">
+                <div class="logo-container">
+                    <svg viewBox="0 0 100 100" class="app-logo-svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-dasharray="5 5" class="orbit" />
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1.5"
+                            stroke-dasharray="10 5" class="orbit reverse" />
+                        <circle cx="50" cy="50" r="15" fill="var(--accent-color)" />
+                        <text x="50" y="55" text-anchor="middle" font-size="12" fill="white" font-weight="800">18</text>
+                        <circle cx="50" cy="5" r="3" fill="var(--accent-color)" class="electron" />
+                        <circle cx="50" cy="95" r="3" fill="var(--accent-color)" class="electron" />
+                    </svg>
+                </div>
+                <h1>Element <span class="highlight">İlk 18</span> GO</h1>
+                <p class="slogan">7. Sınıf Fen | Eğlenceli Öğren</p>
+            </div>
+
+            <div class="menu-buttons">
+                <button class="menu-btn learn-btn" onclick="app.navigateTo('learn')">
+                    <span class="icon">📘</span>
+                    <span class="text">Öğren</span>
+                </button>
+                <button class="menu-btn play-btn" onclick="app.navigateTo('play')">
+                    <span class="icon">🎮</span>
+                    <span class="text">Oyna</span>
+                </button>
+                <button class="menu-btn record-btn" onclick="app.navigateTo('records')">
+                    <span class="icon">🏆</span>
+                    <span class="text">Rekorum</span>
+                </button>
+            </div>
+
+            <div class="bottom-actions">
+                <button class="icon-btn" onclick="app.navigateTo('info')">ℹ️</button>
+                <button class="icon-btn" onclick="app.navigateTo('settings')">⚙️</button>
+            </div>
+        </section>
+
+        <!-- Learn Section (Flashcards) -->
+        <section id="learn-view" class="view">
+            <header class="section-header">
+                <button class="back-btn" onclick="app.navigateTo('menu')">←</button>
+                <h2>Öğrenme Kartları</h2>
+                <div class="header-actions">
+                    <button id="tts-btn" class="icon-btn-small" onclick="app.readElementName()">🔊</button>
+                </div>
+            </header>
+
+            <div class="flashcard-container">
+                <div class="flashcard" id="element-card" onclick="this.classList.toggle('flipped')">
+                    <div class="card-face card-front">
+                        <div class="atom-no" id="card-atom-no">8</div>
+                        <div class="symbol" id="card-symbol">O</div>
+                        <div class="hint">Dokun ve Öğren</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <h3 id="card-name">Oksijen</h3>
+                        <div class="hint">Element Adı</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-navigation">
+                <button class="nav-arrow" onclick="app.prevCard()">‹</button>
+                <div class="counter" id="card-counter">1 / 18</div>
+                <button class="nav-arrow" onclick="app.nextCard()">›</button>
+            </div>
+        </section>
+
+        <!-- Play Section (Quiz) -->
+        <section id="play-view" class="view">
+            <div class="quiz-header">
+                <div class="timer-ring">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path id="timer-path" class="circle" stroke-dasharray="100, 100"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <span id="timer-text">60</span>
+                </div>
+                <div class="score-badge">Puan: <span id="current-score">0</span></div>
+            </div>
+
+            <div id="quiz-content">
+                <div class="question-container">
+                    <p class="question-label" id="q-label">Aşağıdaki sembolün adı nedir?</p>
+                    <h2 class="question-text" id="q-text">O</h2>
+                </div>
+
+                <div class="options-grid" id="options-grid">
+                    <!-- Options injected here -->
+                </div>
+            </div>
+
+            <!-- Quiz Result Overlay -->
+            <div id="quiz-result" class="overlay">
+                <div class="result-content">
+                    <div class="result-icon">🏆</div>
+                    <h2 id="result-stat">Oyun Bitti!</h2>
+                    <p class="result-score">Toplam Puan: <strong id="final-score">0</strong></p>
+                    <p class="motivation" id="motivation-msg">Harika bir denemeydi!</p>
+                    <button class="btn-primary" onclick="app.startQuiz()">Tekrar Oyna</button>
+                    <button class="btn-text" onclick="app.navigateTo('menu')">Ana Menü</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Record Section -->
+        <section id="records-view" class="view">
+            <header class="section-header">
+                <button class="back-btn" onclick="app.navigateTo('menu')">←</button>
+                <h2>Başarılarım</h2>
+                <div></div>
+            </header>
+            <div class="record-card">
+                <span class="icon">🥇</span>
+                <div class="record-info">
+                    <p>En Yüksek Puan</p>
+                    <h2 id="best-score">0</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings-view" class="view">
+            <header class="section-header">
+                <button class="back-btn" onclick="app.navigateTo('menu')">←</button>
+                <h2>Ayarlar</h2>
+                <div></div>
+            </header>
+            <div class="settings-list">
+                <div class="settings-item">
+                    <span>Tema (Açık/Koyu)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle" onchange="app.toggleTheme()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <span>Ses Efektleri</span>
+                    <label class="switch">
+                        <input type="checkbox" id="sound-toggle" checked onchange="app.toggleSound()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Seslendirme Seviyesi</label>
+                    <input type="range" min="0" max="1" step="0.1" value="0.4" id="volume-slider">
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section id="info-view" class="view">
+            <header class="section-header">
+                <button class="back-btn" onclick="app.navigateTo('menu')">←</button>
+                <h2>Hakkında</h2>
+                <div></div>
+            </header>
+            <div class="info-container">
+                <div class="info-logo">⚛️</div>
+                <h3>Element İlk 18 GO</h3>
+                <p>7. Sınıf Fen Bilimleri dersi için özel olarak hazırlanmıştır.</p>
+
+                <div class="dev-box" onclick="window.open('https://fatihpatir.github.io/web/index.html', '_blank')">
+                    <p>Geliştirici:</p>
+                    <strong>Fatih PATIR</strong>
+                    <p>Bilişim Teknolojileri Öğretmeni</p>
+                    <small>© 2025 fatihpatir.github.io</small>
+                </div>
+
+                <div class="red-line">
+                    ⚠️ Bu uygulama sadece periyodik tablodaki ilk 18 elementi içerir.
+                </div>
+
+                <button class="btn-secondary" onclick="app.navigateTo('install')"
+                    style="margin-top: 20px; width: 100%; padding: 15px; border-radius: 15px;">
+                    📲 Uygulama Olarak Yükle
+                </button>
+            </div>
+        </section>
+
+        <!-- Install Guide Section -->
+        <section id="install-view" class="view">
+            <header class="section-header">
+                <button class="back-btn" onclick="app.navigateTo('info')">←</button>
+                <h2>Yükleme Rehberi</h2>
+                <div></div>
+            </header>
+            <div class="info-container">
+                <div class="guide-card">
+                    <h3>🤖 Android (Chrome)</h3>
+                    <p>1. Tarayıcıda sağ üstteki <strong>üç noktaya (⋮)</strong> dokunun.</p>
+                    <p>2. <strong>"Ana ekrana ekle"</strong> veya <strong>"Uygulamayı yükle"</strong> seçeneğine
+                        tıklayın.</p>
+                </div>
+
+                <div class="guide-card" style="margin-top: 15px;">
+                    <h3>🍎 iPhone / iPad (Safari)</h3>
+                    <p>1. Alt menüdeki <strong>"Paylaş" (↑)</strong> simgesine dokunun.</p>
+                    <p>2. Listeyi aşağı kaydırıp <strong>"Ana Ekrana Ekle"</strong> seçeneğini seçin.</p>
+                </div>
+
+                <p style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); text-align: center;">
+                    Böylece uygulamaya internet olmadan da her an ulaşabilirsiniz!
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
